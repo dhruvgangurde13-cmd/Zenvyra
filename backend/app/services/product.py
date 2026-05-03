@@ -20,3 +20,10 @@ class ProductService:
         
     def get_total_products(self) -> int:
         return self.db.query(Product).count()
+
+    def get_product_by_id(self, product_id: UUID4) -> Product:
+        product = self.db.query(Product).filter(Product.id == product_id).first()
+        if not product:
+            raise HTTPException(status_code=404, detail="Product not found")
+        return product
+

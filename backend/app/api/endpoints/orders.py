@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.database import get_db
@@ -26,3 +27,9 @@ def verify_payment(
     order_service = OrderService(db)
     order = order_service.verify_payment(user.id, order_id, verification)
     return APIResponse(success=True, data=order)
+
+@router.get('', response_model=APIResponse[List[OrderResponse]])
+def get_orders(db: Session = Depends(get_db), user: User = Depends(get_current_user)):
+    order_service = OrderService(db)
+    orders = order_service.get_user_orders(user.id)
+    return APIResponse(success=True, data=orders)

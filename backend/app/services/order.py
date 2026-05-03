@@ -78,3 +78,7 @@ class OrderService:
         self.db.commit()
         self.db.refresh(order)
         return order
+
+    def get_user_orders(self, user_id: UUID4):
+        from sqlalchemy.orm import joinedload
+        return self.db.query(Order).options(joinedload(Order.items).joinedload(OrderItem.product)).filter(Order.user_id == user_id).order_by(Order.created_at.desc()).all()

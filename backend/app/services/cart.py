@@ -40,6 +40,36 @@ class CartService:
     def get_cart_items(self, user_id: UUID4):
         return self.db.query(CartItem).filter(CartItem.user_id == user_id).all()
         
+    def update_cart_item(self, user_id: UUID4, item_id: UUID4, quantity: int) -> CartItem:
+        cart_item = self.db.query(CartItem).filter(
+            CartItem.id == item_id,
+            CartItem.user_id == user_id
+        ).first()
+        
+        if not cart_item:
+            raise HTTPException(status_code=404, detail="Cart item not found")
+            
+        product = self.db.query(Product).filter(Product.id == cart_item.product_id).first()
+        if not product or quantity > product.stock:
+            raise HTTPException(status_code=400, detail="Not enough stock")
+            
+        cart_item.quantity = quantity
+        self.db.commit()
+        self.db.refresh(cart_item)
+        return cart_item
+
+    def remove_cart_item(self, user_id: UUID4, item_id: UUID4):
+        cart_item = self.db.query(CartItem).filter(
+            CartItem.id == item_id,
+            CartItem.user_id == user_id
+        ).first()
+        
+        if not cart_item:
+            raise HTTPException(status_code=404, detail="Cart item not found")
+            
+        self.db.delete(cart_item)
+        self.db.commit()
+
     def clear_cart(self, user_id: UUID4):
         self.db.query(CartItem).filter(CartItem.user_id == user_id).delete()
         self.db.commit()

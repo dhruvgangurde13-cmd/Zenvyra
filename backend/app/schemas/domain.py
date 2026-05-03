@@ -50,6 +50,10 @@ class CartItemCreate(BaseModel):
     product_id: UUID
     quantity: int = Field(default=1, gt=0)
 
+class CartItemUpdate(BaseModel):
+    quantity: int = Field(gt=0)
+
+
 class CartItemResponse(BaseModel):
     id: UUID
     quantity: int

@@ -23,3 +23,18 @@ def create_product(product_in: ProductCreate, db: Session = Depends(get_db), adm
     product_service = ProductService(db)
     product = product_service.create_product(product_in)
     return APIResponse(success=True, data=product)
+
+@router.get("/{product_id}", response_model=APIResponse[ProductResponse])
+def get_product(product_id: str, db: Session = Depends(get_db)):
+    from pydantic import UUID4
+    try:
+        import uuid
+        uuid_obj = uuid.UUID(product_id)
+    except ValueError:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Product not found")
+        
+    product_service = ProductService(db)
+    product = product_service.get_product_by_id(product_id)
+    return APIResponse(success=True, data=product)
+
