@@ -29,7 +29,7 @@ export default function Login() {
       formData.append("username", email);
       formData.append("password", password);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/auth/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/auth/login`, {
         method: "POST",
         body: formData,
       });
@@ -41,7 +41,7 @@ export default function Login() {
         
         // Fetch user data to check if admin
         try {
-          const userRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/auth/me`, {
+          const userRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/auth/me`, {
             headers: { Authorization: `Bearer ${token}` }
           });
           const userData = await userRes.json();

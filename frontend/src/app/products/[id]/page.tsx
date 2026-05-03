@@ -26,7 +26,7 @@ export default function ProductDetailPage() {
   const [adding, setAdding] = useState(false);
 
   useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/products/${id}`)
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/products/${id}`)
       .then(res => res.json())
       .then(data => {
         if (data.success) setProduct(data.data);
@@ -44,7 +44,7 @@ export default function ProductDetailPage() {
 
     setAdding(true);
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/cart/items`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/cart/items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
