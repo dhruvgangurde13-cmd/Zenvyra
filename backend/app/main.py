@@ -6,8 +6,11 @@ from app.api.api import api_router
 from app.db.database import engine, Base
 import os
 
-print("DB USER:", os.getenv("POSTGRES_USER"))
-print("DB HOST:", os.getenv("POSTGRES_SERVER"))
+print("STARTING APP...")
+print("POSTGRES_USER:", os.getenv("POSTGRES_USER"))
+print("POSTGRES_SERVER:", os.getenv("POSTGRES_SERVER"))
+print("POSTGRES_DB:", os.getenv("POSTGRES_DB"))
+print("SECRET_KEY:", os.getenv("SECRET_KEY"))
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
