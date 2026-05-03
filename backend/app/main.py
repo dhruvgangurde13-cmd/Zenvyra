@@ -5,7 +5,22 @@ from app.core.config import settings
 from app.api.api import api_router
 from app.db.database import engine, Base
 import os
+from app.db.database import SessionLocal
+from app.db.models import Product
+from decimal import Decimal
 
+def seed_products():
+    db = SessionLocal()
+    if db.query(Product).count() == 0:
+        products = [
+            Product(title="Zenvyra Core", price=Decimal("299.99"), stock=50),
+            Product(title="Zenvyra Float Case", price=Decimal("49.99"), stock=150),
+        ]
+        db.add_all(products)
+        db.commit()
+    db.close()
+
+seed_products()
 print("STARTING APP...")
 print("POSTGRES_USER:", os.getenv("POSTGRES_USER"))
 print("POSTGRES_SERVER:", os.getenv("POSTGRES_SERVER"))
