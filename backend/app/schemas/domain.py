@@ -37,6 +37,14 @@ class ProductBase(BaseModel):
 class ProductCreate(ProductBase):
     pass
 
+class ProductUpdate(BaseModel):
+    title: Optional[str] = None
+    description: Optional[str] = None
+    price: Optional[Decimal] = None
+    image_url: Optional[str] = None
+    category: Optional[str] = None
+    stock: Optional[int] = None
+
 class ProductResponse(ProductBase):
     id: UUID
     created_at: datetime
@@ -87,3 +95,10 @@ class PaymentVerification(BaseModel):
     razorpay_order_id: str
     razorpay_payment_id: str
     razorpay_signature: str
+
+class AdminStatsResponse(BaseModel):
+    total_users: int
+    total_orders: int
+    total_products: int
+    total_revenue: Decimal
+    low_stock_products: int

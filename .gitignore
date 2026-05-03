@@ -1,90 +1,61 @@
-# ============================================
-# GUIDE AI-SDP & Documentation (local-only)
-# ============================================
-guide-ai-sdp/
-guide-docs/
-gemeni.md
-
-# ============================================
 # Node / Next.js
-# ============================================
 node_modules/
 .next/
-out/
 dist/
 build/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
-package-lock.json
 
-# ============================================
-# Python / FastAPI
-# ============================================
+# Python
 venv/
 .venv/
 __pycache__/
+*.pyc
 *.py[cod]
 *.pyo
 *.egg-info/
-*.egg
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
-htmlcov/
-.coverage
-*.cover
 
-# ============================================
-# Environment & Secrets
-# ============================================
+# Env
 .env
 .env.*
 !.env.example
 
-# ============================================
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
 # IDE / Editor
-# ============================================
 .vscode/
 .idea/
 *.swp
 *.swo
 *~
-.DS_Store
-Thumbs.db
-desktop.ini
 
-# ============================================
-# OS & System
-# ============================================
-*.log
-*.pid
-*.seed
-
-# ============================================
 # Database
-# ============================================
 *.sqlite3
 *.db
 
-# ============================================
-# Build Artifacts & Caches
-# ============================================
-*.tsbuildinfo
+# Build Artifacts
 .turbo/
 .vercel/
 .cache/
 
-# ============================================
-# Debug & Test Scripts (local-only)
-# ============================================
+# IMPORTANT CUSTOM RULES
+guide-ai-sdp/
+guide-docs/
+*.md.backup
+gemeni.md
 debug.py
 test_integration.py
 TEST_RUNBOOK.md
-
-# ============================================
-# AI Agent Config (local-only)
-# ============================================
 AGENTS.md
 CLAUDE.md

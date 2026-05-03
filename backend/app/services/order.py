@@ -3,6 +3,8 @@ from fastapi import HTTPException
 from pydantic import UUID4
 import uuid
 from decimal import Decimal
+from typing import List
+from sqlalchemy import func
 from app.db.models import Order, OrderItem, CartItem, Product, OrderStatus
 from app.schemas.domain import PaymentVerification
 from app.services.cart import CartService
@@ -49,6 +51,9 @@ class OrderService:
             oi.order_id = order.id
             self.db.add(oi)
 
+        # Clear the cart after order is successfully placed
+        self.cart_service.clear_cart(user_id)
+
         self.db.commit()
         self.db.refresh(order)
         return order
@@ -74,11 +79,23 @@ class OrderService:
                 if product.stock < 0:
                     product.stock = 0
 
-        self.cart_service.clear_cart(user_id)
         self.db.commit()
         self.db.refresh(order)
         return order
 
-    def get_user_orders(self, user_id: UUID4):
+    def get_user_orders(self, user_id: UUID4) -> List[Order]:
         from sqlalchemy.orm import joinedload
-        return self.db.query(Order).options(joinedload(Order.items).joinedload(OrderItem.product)).filter(Order.user_id == user_id).order_by(Order.created_at.desc()).all()
+        return self.db.query(Order).options(joinedload(Order.items).joinedload(OrderItem.product)).filter(
+            Order.user_id == user_id
+        ).order_by(Order.created_at.desc()).all()
+
+    def get_all_orders(self, skip: int = 0, limit: int = 50) -> List[Order]:
+        from sqlalchemy.orm import joinedload
+        return self.db.query(Order).options(joinedload(Order.items).joinedload(OrderItem.product)).order_by(Order.created_at.desc()).offset(skip).limit(limit).all()
+
+    def get_total_orders(self) -> int:
+        return self.db.query(Order).count()
+
+    def get_total_revenue(self) -> float:
+        total = self.db.query(func.sum(Order.total_amount)).filter(Order.status == OrderStatus.PAID).scalar()
+        return float(total) if total else 0.0

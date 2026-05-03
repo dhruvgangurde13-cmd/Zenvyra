@@ -1,0 +1,140 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Dark Theme Palette ─── */
+  --color-background: #0B0F1A;
+  --color-foreground: #F9FAFB;
+  --color-primary: #F9FAFB;
+  --color-primary-foreground: #0B0F1A;
+  --color-secondary: #9CA3AF;
+
+  /* Surfaces & Cards */
+  --color-surface: #1A1D24;
+  --color-surface-elevated: #22262F;
+
+  /* Brand */
+  --color-brand: #A78BFA;
+  --color-brand-hover: #B9A0FF;
+  --color-accent-blue: #60A5FA;
+  --color-accent-purple: #A78BFA;
+
+  /* Borders */
+  --color-border: rgba(255, 255, 255, 0.06);
+  --color-border-strong: rgba(255, 255, 255, 0.1);
+
+  /* Typography */
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  
+  /* Radii */
+  --radius-sm: 0.3rem;
+  --radius-md: 0.6rem;
+  --radius-lg: 1rem;
+  --radius-xl: 1.5rem;
+}
+
+@layer base {
+  *, ::after, ::before {
+    box-sizing: border-box;
+    border-width: 0;
+    border-style: solid;
+    border-color: var(--color-border);
+  }
+  
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  .shadow-soft {
+    box-shadow: 0 4px 24px -4px rgba(0, 0, 0, 0.4);
+  }
+  
+  .shadow-hover {
+    box-shadow: 0 12px 40px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  .shadow-glow-purple {
+    box-shadow: 0 0 40px -8px rgba(167, 139, 250, 0.2);
+  }
+
+  .card-lift {
+    transition: transform 400ms cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 400ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px -8px rgba(0, 0, 0, 0.5);
+  }
+
+  /* Screen-edge vignette */
+  .vignette::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: radial-gradient(
+      ellipse 85% 75% at 50% 48%,
+      transparent 45%,
+      rgba(0, 0, 0, 0.3) 100%
+    );
+  }
+
+  /* Ultra-slow drifting ambient glow */
+  .ambient-drift {
+    animation: ambientDrift 25s ease-in-out infinite alternate;
+  }
+
+  .ambient-drift-reverse {
+    animation: ambientDriftReverse 30s ease-in-out infinite alternate;
+  }
+}
+
+/* ─── Keyframes (outside @layer) ─── */
+@keyframes ambientDrift {
+  0% {
+    transform: translate(0%, 0%) scale(1);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate(3%, -2%) scale(1.05);
+    opacity: 0.16;
+  }
+  100% {
+    transform: translate(-2%, 3%) scale(1.02);
+    opacity: 0.10;
+  }
+}
+
+@keyframes ambientDriftReverse {
+  0% {
+    transform: translate(0%, 0%) scale(1);
+    opacity: 0.08;
+  }
+  50% {
+    transform: translate(-4%, 2%) scale(1.08);
+    opacity: 0.12;
+  }
+  100% {
+    transform: translate(2%, -3%) scale(1.03);
+    opacity: 0.06;
+  }
+}
+
+@keyframes zenoPulse {
+  0%, 100% {
+    opacity: 0.18;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.25;
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+}
+

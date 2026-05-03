@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from sqlalchemy.orm import Session
 from app.db.database import get_db
 from app.schemas.base import APIResponse, PaginatedResponse
-from app.schemas.domain import ProductResponse, ProductCreate
+from app.schemas.domain import ProductResponse, ProductCreate, ProductUpdate
 from app.services.product import ProductService
 from app.api.deps import get_current_admin
 
@@ -37,4 +37,32 @@ def get_product(product_id: str, db: Session = Depends(get_db)):
     product_service = ProductService(db)
     product = product_service.get_product_by_id(product_id)
     return APIResponse(success=True, data=product)
+
+@router.put("/{product_id}", response_model=APIResponse[ProductResponse])
+def update_product(product_id: str, product_in: ProductUpdate, db: Session = Depends(get_db), admin=Depends(get_current_admin)):
+    from pydantic import UUID4
+    try:
+        import uuid
+        uuid_obj = uuid.UUID(product_id)
+    except ValueError:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Product not found")
+        
+    product_service = ProductService(db)
+    product = product_service.update_product(product_id, product_in)
+    return APIResponse(success=True, data=product)
+
+@router.delete("/{product_id}", response_model=APIResponse[bool])
+def delete_product(product_id: str, db: Session = Depends(get_db), admin=Depends(get_current_admin)):
+    from pydantic import UUID4
+    try:
+        import uuid
+        uuid_obj = uuid.UUID(product_id)
+    except ValueError:
+        from fastapi import HTTPException
+        raise HTTPException(status_code=404, detail="Product not found")
+        
+    product_service = ProductService(db)
+    success = product_service.delete_product(product_id)
+    return APIResponse(success=True, data=success)
 
