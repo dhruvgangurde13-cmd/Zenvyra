@@ -23,7 +23,7 @@ export default function ProductsPage() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/api/products")
+    fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/products`)
       .then(res => res.json())
       .then(data => {
         if (data.success) {
@@ -42,7 +42,7 @@ export default function ProductsPage() {
     }
 
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/cart/items", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/cart/items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

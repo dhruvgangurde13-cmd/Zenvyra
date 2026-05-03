@@ -31,7 +31,7 @@ export default function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch("http://127.0.0.1:8000/api/products");
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/products`);
       const data = await res.json();
       if (data.success) {
         setProducts(data.data.items);
@@ -87,8 +87,8 @@ export default function AdminProducts() {
     };
 
     const url = editingProduct 
-      ? `http://127.0.0.1:8000/api/products/${editingProduct.id}`
-      : "http://127.0.0.1:8000/api/products";
+      ? `${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/products/${editingProduct.id}`
+      : `${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/products`;
       
     const method = editingProduct ? "PUT" : "POST";
 
@@ -122,7 +122,7 @@ export default function AdminProducts() {
     
     const token = localStorage.getItem("zenvyra_token");
     try {
-      const res = await fetch(`http://127.0.0.1:8000/api/products/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || `${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}`}/api/products/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
