@@ -4,7 +4,10 @@ from app.api.endpoints import auth, products, cart, orders, admin
 from app.core.config import settings
 from app.api.api import api_router
 from app.db.database import engine, Base
+import os
 
+print("DB USER:", os.getenv("POSTGRES_USER"))
+print("DB HOST:", os.getenv("POSTGRES_SERVER"))
 Base.metadata.create_all(bind=engine)
 
 app = FastAPI(
